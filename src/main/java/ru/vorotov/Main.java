@@ -2,10 +2,12 @@ package ru.vorotov;
 
 public class Main {
     public static void main(String[] args) {
-        int amountOfEvents = 5;
+        int amountOfEvents = 5; // количеcтво событий
         Monitor monitor = new Monitor();
 
+        // поток с функцией-поставщиком
         Thread producerThread = new Thread(() -> {
+            // создание событий
             for (int i = 0; i < amountOfEvents; i++) {
                 monitor.provide();
                 try {
@@ -16,10 +18,15 @@ public class Main {
             }
         });
 
+        // поток с функцией-потребителем
         Thread consumerThread = new Thread(() -> {
-            monitor.consume();
+            // создание получателей событий (количество получателей равно количеству событий)
+            for (int i = 0; i < amountOfEvents; i++) {
+                monitor.consume();
+            }
         });
 
+        // запуск потоков
         producerThread.start();
         consumerThread.start();
     }
